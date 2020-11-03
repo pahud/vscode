@@ -30,6 +30,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          file: Dockerfile
+          file: ./Dockerfile
           context: .devcontainer
           tags: pahud/vscode:latest
