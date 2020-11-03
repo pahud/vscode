@@ -1,6 +1,6 @@
 FROM jsii/superchain
 
-RUN yum install -y jq wget zsh
+RUN yum install -y jq wget zsh sudo
 
 RUN npm i -g aws-cdk
 
@@ -33,4 +33,4 @@ ENV ENV="/home/$USERNAME/.ashrc" \
 RUN git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 RUN printf 'ZSH_THEME="powerlevel9k/powerlevel9k"\nENABLE_CORRECTION="false"\nplugins=(git virtualenv)\nPOWERLEVEL9K_MODE="nerdfont-complete"\nPOWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir dir_writable)\nPOWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status vcs virtualenv)\nsource $ZSH/oh-my-zsh.sh' > "/home/$USERNAME/.zshrc"
 RUN echo "exec `which zsh`" > "/home/$USERNAME/.ashrc"
-USER $USERNAME
+# USER root
