@@ -32,6 +32,7 @@ ENV ENV="/home/$USERNAME/.ashrc" \
 # RUN printf 'ZSH_THEME="robbyrussell"\nENABLE_CORRECTION="false"\nplugins=(git copyfile extract colorize dotenv encode64 golang)\nsource $ZSH/oh-my-zsh.sh' > "/home/$USERNAME/.zshrc"
 RUN git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 
+<<<<<<< HEAD
 ADD setup.sh /root/
 
 # # if in codespaces
@@ -40,4 +41,12 @@ ADD setup.sh /root/
 # # if not in codespaces
 # RUN [[ ! $CODESPACES == 'true' ]] && printf 'ZSH_THEME="powerlevel9k/powerlevel9k"\nENABLE_CORRECTION="false"\nplugins=(git virtualenv)\nPOWERLEVEL9K_MODE="nerdfont-complete"\nPOWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir dir_writable)\nPOWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status vcs virtualenv)\nsource $ZSH/oh-my-zsh.sh' > "/home/$USERNAME/.zshrc" || true
 # RUN echo "exec `which zsh`" > "/home/$USERNAME/.ashrc"
+=======
+# if in codespaces
+RUN [[ $CODESPACES == 'true' ]] && printf 'ZSH_THEME="clean"\nENABLE_CORRECTION="false"\nplugins=(git virtualenv)\nsource $ZSH/oh-my-zsh.sh' > "/home/$USERNAME/.zshrc" || true
+
+# if not in codespaces
+RUN [[ ! $CODESPACES == 'true' ]] && printf 'ZSH_THEME="powerlevel9k/powerlevel9k"\nENABLE_CORRECTION="false"\nplugins=(git virtualenv)\nPOWERLEVEL9K_MODE="nerdfont-complete"\nPOWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir dir_writable)\nPOWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status vcs virtualenv)\nsource $ZSH/oh-my-zsh.sh' > "/home/$USERNAME/.zshrc" || true
+RUN echo "exec `which zsh`" > "/home/$USERNAME/.ashrc"
+>>>>>>> c192f7283e2ad1bf4a0d084522544a2af7164cef
 # USER root
