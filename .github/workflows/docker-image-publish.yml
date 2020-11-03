@@ -31,5 +31,5 @@ jobs:
         with:
           push: true
           file: ./Dockerfile
-          context: .devcontainer
+          context: ./.devcontainer
           tags: pahud/vscode:latest
