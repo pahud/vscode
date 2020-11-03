@@ -21,7 +21,6 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
   unzip awscliv2.zip && \
   ./aws/install
 
-
 # Setup shell
 USER $USERNAME
 RUN sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended &> /dev/null
@@ -29,15 +28,7 @@ ENV ENV="/home/$USERNAME/.ashrc" \
   ZSH=/home/$USERNAME/.oh-my-zsh \
   EDITOR=vi \
   LANG=en_US.UTF-8
-# RUN printf 'ZSH_THEME="robbyrussell"\nENABLE_CORRECTION="false"\nplugins=(git copyfile extract colorize dotenv encode64 golang)\nsource $ZSH/oh-my-zsh.sh' > "/home/$USERNAME/.zshrc"
+  
 RUN git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 
 ADD setup.sh /root/
-
-# # if in codespaces
-# RUN [[ $CODESPACES == 'true' ]] && printf 'ZSH_THEME="clean"\nENABLE_CORRECTION="false"\nplugins=(git virtualenv)\nsource $ZSH/oh-my-zsh.sh' > "/home/$USERNAME/.zshrc" || true
-
-# # if not in codespaces
-# RUN [[ ! $CODESPACES == 'true' ]] && printf 'ZSH_THEME="powerlevel9k/powerlevel9k"\nENABLE_CORRECTION="false"\nplugins=(git virtualenv)\nPOWERLEVEL9K_MODE="nerdfont-complete"\nPOWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir dir_writable)\nPOWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status vcs virtualenv)\nsource $ZSH/oh-my-zsh.sh' > "/home/$USERNAME/.zshrc" || true
-# RUN echo "exec `which zsh`" > "/home/$USERNAME/.ashrc"
-# USER root
