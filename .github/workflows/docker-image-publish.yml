@@ -6,7 +6,34 @@ on:
   workflow_dispatch: {}
   
 jobs:
-  prepare:
+#   prepare:
+#     runs-on: ubuntu-latest
+#     steps:
+#       -
+#         name: Checkout
+#         uses: actions/checkout@v2
+#       -
+#         name: Set up QEMU
+#         uses: docker/setup-qemu-action@v1
+#       -
+#         name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v1
+#       -
+#         name: Login to DockerHub
+#         uses: docker/login-action@v1 
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
+#       -
+#         name: Login to GitHub Container Registry
+#         uses: docker/login-action@v1 
+#         with:
+#           registry: ghcr.io
+#           username: ${{ github.repository_owner }}
+#           password: ${{ secrets.CR_PAT }}
+  docker_hub:
+    name: Docker Hub
+#     needs: prepare
     runs-on: ubuntu-latest
     steps:
       -
@@ -25,18 +52,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
-        name: Login to GitHub Container Registry
-        uses: docker/login-action@v1 
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.CR_PAT }}
-  docker_hub:
-    name: Docker Hub
-    needs: prepare
-    runs-on: ubuntu-latest
-    steps:
-      -
         name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
@@ -51,9 +66,25 @@ jobs:
         run: echo ${{ steps.docker_build.outputs.digest }}
   github_container:
     name: Github Container Registry
-    needs: prepare
+#     needs: prepare
     runs-on: ubuntu-latest
     steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
       -
         name: Build and push
         id: docker_build
