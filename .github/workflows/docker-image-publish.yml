@@ -6,7 +6,7 @@ on:
   workflow_dispatch: {}
   
 jobs:
-  main:
+  prepare:
     runs-on: ubuntu-latest
     steps:
       -
@@ -31,9 +31,29 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
+  docker_hub:
+    name: Docker Hub
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: .devcontainer
+          push: true
+          file: ./.devcontainer/Dockerfile
+          tags: |
+            pahud/vscode:latest
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
+  github_container:
+    name: Github Container Registry
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
       -
         name: Build and push
         id: docker_build
@@ -44,3 +64,6 @@ jobs:
           file: ./.devcontainer/Dockerfile
           tags: |
             ghcr.io/pahud/vscode:latest
+      -
+        name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
