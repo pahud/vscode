@@ -42,7 +42,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .devcontainer
-          push: true
+          #push: true
           file: ./.devcontainer/Dockerfile
           tags: |
             pahud/vscode:latest
@@ -60,7 +60,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .devcontainer
-          push: true
+          #push: true
           file: ./.devcontainer/Dockerfile
           tags: |
             ghcr.io/pahud/vscode:latest
