@@ -43,5 +43,4 @@ jobs:
           push: true
           file: ./.devcontainer/Dockerfile
           tags: |
-            pahud/vscode:latest
             ghcr.io/pahud/vscode:latest
