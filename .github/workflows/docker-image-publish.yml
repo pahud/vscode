@@ -25,6 +25,16 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
+      -
+        name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+      -
         name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
@@ -32,4 +42,6 @@ jobs:
           context: .devcontainer
           push: true
           file: ./.devcontainer/Dockerfile
-          tags: pahud/vscode:latest
+          tags: |
+            pahud/vscode:latest
+            ghcr.io/pahud/vscode:latest
