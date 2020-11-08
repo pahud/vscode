@@ -6,8 +6,8 @@ on:
   workflow_dispatch: {}
 
 env:
-  dockerhub_tag: pahud/vscode:latest
-  ghcr_tag: ghcr.io/pahud/vscode:latest
+  dockerhub_tag: "${GITHUB_REPOSITORY}:latest"
+  ghcr_tag: ghcr.io/"${GITHUB_REPOSITORY}:latest"
 
 jobs:
   docker_hub:
