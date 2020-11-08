@@ -41,8 +41,8 @@ jobs:
           #push: true
           file: ./.devcontainer/Dockerfile
           tags: |
-            "${{ env.dockerhub_tag }}"
-             "${{ env.dockerhub_tag_sha8 }}"
+            ${{ env.dockerhub_tag }}
+            ${{ env.dockerhub_tag_sha8 }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -75,8 +75,8 @@ jobs:
           #push: true
           file: ./.devcontainer/Dockerfile
           tags: |
-            "${{ env.ghcr_tag }}"
-            "${{ env.ghcr_tag_sha8 }}"
+            ${{ env.ghcr_tag }}
+            ${{ env.ghcr_tag_sha8 }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
