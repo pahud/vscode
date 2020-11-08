@@ -8,8 +8,8 @@ on:
 env:
   dockerhub_tag: ${{github.repository}}:latest
   ghcr_tag: ghcr.io/${{github.repository}}:latest
-  dockerhub_tag_sha8: ${{github.repository}}:${{GITHUB_SHA::8}}
-  ghcr_tag_sha8: ghcr.io/${{github.repository}}:${{GITHUB_SHA::8}}
+  dockerhub_tag_sha8: ${{github.repository}}:${{ github.sha[0:8] }}
+  ghcr_tag_sha8: ghcr.io/${{github.repository}}:${{ github.sha[0:8] }}
 
 jobs:
   docker_hub:
