@@ -24,7 +24,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 # install kubectl
 RUN curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.8/2020-09-18/bin/linux/amd64/kubectl && \
   chmod +x kubectl && \
-  mv kubectl /usr/local/bin
+  mv kubectl /usr/local/bin/kubectl
 
 # Setup shell
 USER $USERNAME
