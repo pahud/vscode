@@ -6,8 +6,11 @@ on:
   workflow_dispatch: {}
 
 env:
+  sha8: ${GITHUB_SHA::8}
   dockerhub_tag: ${{github.repository}}:latest
   ghcr_tag: ghcr.io/${{github.repository}}:latest
+  dockerhub_tag_sha8: ${{github.repository}}:${GITHUB_SHA::8}
+  ghcr_tag_sha8: ghcr.io/${{github.repository}}:${GITHUB_SHA::8}
 
 jobs:
   docker_hub:
@@ -37,7 +40,9 @@ jobs:
           context: .devcontainer
           #push: true
           file: ./.devcontainer/Dockerfile
-          tags: "${{ env.dockerhub_tag }}"
+          tags: |
+            "${{ env.dockerhub_tag }}"
+             "${{ env.dockerhub_tag_sha8 }}"
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -69,7 +74,9 @@ jobs:
           context: .devcontainer
           #push: true
           file: ./.devcontainer/Dockerfile
-          tags: "${{ env.ghcr_tag }}"
+          tags: |
+            "${{ env.ghcr_tag }}"
+            "${{ env.ghcr_tag_sha8 }}"
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
