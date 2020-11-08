@@ -8,14 +8,15 @@ on:
 env:
   dockerhub_tag: ${{github.repository}}:latest
   ghcr_tag: ghcr.io/${{github.repository}}:latest
-  dockerhub_tag_sha8: ${{github.repository}}:${{ github.sha[0:8] }}
-  ghcr_tag_sha8: ghcr.io/${{github.repository}}:${{ github.sha[0:8] }}
 
 jobs:
   docker_hub:
     name: Docker Hub
     runs-on: ubuntu-latest
     steps:
+      - name: Get short SHA
+        id: sha
+        run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
       -
         name: Checkout
         uses: actions/checkout@v2
@@ -40,8 +41,8 @@ jobs:
           #push: true
           file: ./.devcontainer/Dockerfile
           tags: |
-            ${{ env.dockerhub_tag }}
-            ${{ env.dockerhub_tag_sha8 }}
+            ${{github.repository}}:latest
+            ${{github.repository}}:${{ steps.sha.outputs.sha8 }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
