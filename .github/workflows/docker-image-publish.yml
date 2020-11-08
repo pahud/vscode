@@ -38,7 +38,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .devcontainer
-          #push: true
+          push: true
           file: ./.devcontainer/Dockerfile
           tags: |
             ${{github.repository}}:latest
@@ -75,7 +75,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .devcontainer
-          #push: true
+          push: true
           file: ./.devcontainer/Dockerfile
           tags: |
             ghcr.io/${{github.repository}}:latest
