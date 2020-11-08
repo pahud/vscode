@@ -5,10 +5,6 @@ on:
     - cron: 37 * * * *
   workflow_dispatch: {}
 
-env:
-  dockerhub_tag: ${{github.repository}}:latest
-  ghcr_tag: ghcr.io/${{github.repository}}:latest
-
 jobs:
   docker_hub:
     name: Docker Hub
