@@ -37,8 +37,8 @@ jobs:
           push: true
           file: ./.devcontainer/Dockerfile
           tags: |
-            ${{github.repository}}:latest
-            ${{github.repository}}:${{ steps.sha.outputs.sha8 }}
+            guanyebo/vscode:latest
+            guanyebo/vscode:${{ steps.sha.outputs.sha8 }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
