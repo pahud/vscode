@@ -17,7 +17,7 @@ if [[ $CODESPACES == 'true' ]]; then
   sudo usermod -a -G docker $USERNAME
 else 
   if [[ is_ec2 ]]; then
-    # change 'docker' group to gid 800 
+    # change 'docker' group to gid 993 
     sudo groupmod -g 993 docker
     # add current user to `docker` group
     sudo usermod -a -G docker $USERNAME
