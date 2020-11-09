@@ -9,6 +9,8 @@ if [[ $CODESPACES == 'true' ]]; then
   sudo groupmod -g 800 docker
   # add current user to `docker` group
   sudo usermod -a -G docker $USERNAME
+  # add current user to `root` group
+  sudo usermod -a -G root $USERNAME
 else 
   printf 'ZSH_THEME="powerlevel9k/powerlevel9k"\nENABLE_CORRECTION="false"\nplugins=(git virtualenv)\nPOWERLEVEL9K_MODE="nerdfont-complete"\nPOWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir dir_writable)\nPOWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status vcs virtualenv)\nsource $ZSH/oh-my-zsh.sh' > "/home/$USERNAME/.zshrc"
 fi
