@@ -1,5 +1,5 @@
 # vscode
-VSCode template for general development workspace
+VSCode template for CDK development workspace
 
 # AWS SSO for AWS CDK
 
