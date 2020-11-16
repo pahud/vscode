@@ -1,7 +1,7 @@
 # vscode
 VSCode template for general development workspace
 
-# AWS SSO
+# AWS SSO for AWS CDK
 
 Configure your `default` AWS_PROFILE with AWS SSO
 ```sh
