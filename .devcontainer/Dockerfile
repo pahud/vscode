@@ -36,4 +36,4 @@ ENV ENV="/home/$USERNAME/.ashrc" \
   
 RUN git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 
-ADD setup.sh /root/
+ADD ./bin/setup.sh /root/
