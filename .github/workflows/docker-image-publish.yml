@@ -47,7 +47,7 @@ jobs:
         run: echo ${{ steps.docker_build.outputs.digest }}
   github_container:
     name: Github Container Registry
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest, self-hosted]
     steps:
       - name: Get short SHA
         id: sha
@@ -84,7 +84,7 @@ jobs:
         run: echo ${{ steps.docker_build.outputs.digest }}
   ecr_public:
     name: ECR Public
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest, self-hosted]
     steps:
       - name: Get short SHA
         id: sha
