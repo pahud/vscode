@@ -84,7 +84,7 @@ jobs:
         run: echo ${{ steps.docker_build.outputs.digest }}
   ecr_public:
     name: ECR Public
-    runs-on: self-hosted
+    runs-on: [self-hosted,Linux]
     steps:
       - name: Get short SHA
         id: sha
@@ -92,6 +92,9 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
