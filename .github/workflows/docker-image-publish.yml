@@ -114,8 +114,9 @@ jobs:
           push: true
           file: ./.devcontainer/Dockerfile
           tags: |
-            public.ecr.aws/d7p2r8s3/${{github.repository}}:latest
-            public.ecr.aws/d7p2r8s3/${{github.repository}}:${{ steps.sha.outputs.sha8 }}
+            public.ecr.aws/d7p2r8s3/vscode:latest
+            #public.ecr.aws/d7p2r8s3/${{github.repository}}:latest
+            #public.ecr.aws/d7p2r8s3/${{github.repository}}:${{ steps.sha.outputs.sha8 }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
