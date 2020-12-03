@@ -110,7 +110,7 @@ jobs:
 
       - name: Login to Amazon ECR Public
         id: login-ecr
-        uses: pahud/amazon-ecr-login@5b8b435
+        uses: pahud/amazon-ecr-login@7da27f1
         with:
           ecr_type: public
 #       -
