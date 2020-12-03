@@ -120,17 +120,29 @@ jobs:
 #           registry: public.ecr.aws
 #           username: AWS
 #           password: ${{ secrets.ECR_PUBLIC_TOKEN }}
-      -
-        name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          context: .devcontainer
-          push: true
-          file: ./.devcontainer/Dockerfile
-          tags: |
-            public.ecr.aws/d7p2r8s3/${{ steps.repoName.outputs.reponame }}:latest
-            public.ecr.aws/d7p2r8s3/${{ steps.repoName.outputs.reponame }}:${{ steps.sha.outputs.sha8 }}
-      -
-        name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+      - name: Build, tag, and push image to Amazon ECR public
+        env:
+          ECR_REGISTRY: public.ecr.aws
+          ECR_ALIAS: d7p2r8s3
+          ECR_REPOSITORY: ${{ steps.repoName.outputs.reponame }}
+          IMAGE_TAG_SHA8: ${{ steps.sha.outputs.sha8 }}
+          IMAGE_TAG_LATEST: latet
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG_LATEST -f .devcontainer/Dockerfile .devcontainer
+          docker tag $ECR_REGISTRY/$ECR_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG_LATEST $ECR_REGISTRY/$ECR_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG_SHA8
+          docker push $ECR_REGISTRY/$ECR_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG_LATEST
+          docker push $ECR_REGISTRY/$ECR_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG_SHA8
+#       -
+#         name: Build and push
+#         id: docker_build
+#         uses: docker/build-push-action@v2
+#         with:
+#           context: .devcontainer
+#           push: true
+#           file: ./.devcontainer/Dockerfile
+#           tags: |
+#             public.ecr.aws/d7p2r8s3/${{ steps.repoName.outputs.reponame }}:latest
+#             public.ecr.aws/d7p2r8s3/${{ steps.repoName.outputs.reponame }}:${{ steps.sha.outputs.sha8 }}
+#       -
+#         name: Image digest
+#         run: echo ${{ steps.docker_build.outputs.digest }}
