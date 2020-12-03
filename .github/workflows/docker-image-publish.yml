@@ -16,23 +16,18 @@ jobs:
       - name: Get short SHA
         id: sha
         run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      -
-        name: Login to DockerHub
-        uses: docker/login-action@v1 
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
+      - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
@@ -42,8 +37,7 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.repoName.outputs.reponame }}:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.repoName.outputs.reponame }}:${{ steps.sha.outputs.sha8 }}
-      -
-        name: Image digest
+      - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
   github_container:
     name: Github Container Registry
@@ -52,24 +46,19 @@ jobs:
       - name: Get short SHA
         id: sha
         run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      -
-        name: Login to GitHub Container Registry
-        uses: docker/login-action@v1 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
-      -
-        name: Build and push
+      - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
@@ -79,8 +68,7 @@ jobs:
           tags: |
             ghcr.io/${{github.repository}}:latest
             ghcr.io/${{github.repository}}:${{ steps.sha.outputs.sha8 }}
-      -
-        name: Image digest
+      - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
   ecr_public:
     name: ECR Public
@@ -92,14 +80,11 @@ jobs:
       - name: Get short SHA
         id: sha
         run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -108,30 +93,19 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Login to Amazon ECR Public
-        id: login-ecr
-        uses: pahud/amazon-ecr-login@7da27f1
-        with:
-          ecr-type: public
-#       -
-#         name: Login to ECR Public
-#         uses: docker/login-action@v1 
-#         with:
-#           registry: public.ecr.aws
-#           username: AWS
-#           password: ${{ secrets.ECR_PUBLIC_TOKEN }}
-      - name: Build, tag, and push image to Amazon ECR public
+      - name: build and push
+        id: build-and-push
+        uses: pahud/ecr-public-action@5d5f66a
         env:
-          ECR_REGISTRY: public.ecr.aws
-          ECR_ALIAS: d7p2r8s3
-          ECR_REPOSITORY: ${{ steps.repoName.outputs.reponame }}
-          IMAGE_TAG_SHA8: ${{ steps.sha.outputs.sha8 }}
-          IMAGE_TAG_LATEST: latet
-        run: |
-          docker build -t $ECR_REGISTRY/$ECR_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG_LATEST -f .devcontainer/Dockerfile .devcontainer
-          docker tag $ECR_REGISTRY/$ECR_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG_LATEST $ECR_REGISTRY/$ECR_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG_SHA8
-          docker push $ECR_REGISTRY/$ECR_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG_LATEST
-          docker push $ECR_REGISTRY/$ECR_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG_SHA8
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        with:
+          context: .devcontainer
+          file: ./.devcontainer/Dockerfile
+          tags: |
+            public.ecr.aws/d7p2r8s3/${{ steps.repoName.outputs.reponame }}:latest
+            public.ecr.aws/d7p2r8s3/${{ steps.repoName.outputs.reponame }}:${{ steps.sha.outputs.sha8 }}
+
 #       -
 #         name: Build and push
 #         id: docker_build
