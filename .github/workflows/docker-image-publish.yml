@@ -112,7 +112,7 @@ jobs:
         id: login-ecr
         uses: pahud/amazon-ecr-login@7da27f1
         with:
-          ecr_type: public
+          ecr-type: public
 #       -
 #         name: Login to ECR Public
 #         uses: docker/login-action@v1 
