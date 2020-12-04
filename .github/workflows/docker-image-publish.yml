@@ -101,7 +101,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         with:
           context: .devcontainer
-          file: ./.devcontainer/Dockerfile
+          dockerfile: ./.devcontainer/Dockerfile
           tags: |
             public.ecr.aws/d7p2r8s3/${{ steps.repoName.outputs.reponame }}:latest
             public.ecr.aws/d7p2r8s3/${{ steps.repoName.outputs.reponame }}:${{ steps.sha.outputs.sha8 }}
