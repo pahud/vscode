@@ -95,7 +95,7 @@ jobs:
 
       - name: build and push
         id: build-and-push
-        uses: pahud/ecr-public-action@5d5f66a
+        uses: pahud/ecr-public-action@12e969f
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
