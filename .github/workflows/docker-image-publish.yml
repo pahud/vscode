@@ -82,41 +82,18 @@ jobs:
         run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-
-      - name: build and push
+      - name: Build and Push to ECR Public
         id: build-and-push
         uses: pahud/ecr-public-action@12e969f
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         with:
           context: .devcontainer
           dockerfile: ./.devcontainer/Dockerfile
           tags: |
             public.ecr.aws/d7p2r8s3/${{ steps.repoName.outputs.reponame }}:latest
             public.ecr.aws/d7p2r8s3/${{ steps.repoName.outputs.reponame }}:${{ steps.sha.outputs.sha8 }}
-
-#       -
-#         name: Build and push
-#         id: docker_build
-#         uses: docker/build-push-action@v2
-#         with:
-#           context: .devcontainer
-#           push: true
-#           file: ./.devcontainer/Dockerfile
-#           tags: |
-#             public.ecr.aws/d7p2r8s3/${{ steps.repoName.outputs.reponame }}:latest
-#             public.ecr.aws/d7p2r8s3/${{ steps.repoName.outputs.reponame }}:${{ steps.sha.outputs.sha8 }}
-#       -
-#         name: Image digest
-#         run: echo ${{ steps.docker_build.outputs.digest }}
