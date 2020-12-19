@@ -1,6 +1,6 @@
 {
     "name": "Dev Container Definition - AWS CDK",
-    "image": "ghcr.io/pahud/vscode:latest",
+    "image": "public.ecr.aws/pahudnet/vscode:latest",
 //     "dockerFile": "Dockerfile",
     "workspaceFolder": "/workspace",
     "workspaceMount": "source=remote-workspace,target=/workspace,type=volume",
