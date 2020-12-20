@@ -1,6 +1,10 @@
 # vscode
 VSCode template for CDK development workspace
 
+public dockder image:
+
+`public.ecr.aws/pahudnet/vscode:latest`
+
 # AWS SSO for AWS CDK
 
 Configure your `default` AWS_PROFILE with AWS SSO
