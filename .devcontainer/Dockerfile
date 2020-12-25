@@ -1,6 +1,6 @@
 FROM jsii/superchain
 
-RUN yum install -y jq wget zsh sudo
+RUN yum install -y jq wget zsh sudo docker
 
 RUN npm i -g aws-cdk
 
@@ -33,7 +33,7 @@ ENV ENV="/home/$USERNAME/.ashrc" \
   ZSH=/home/$USERNAME/.oh-my-zsh \
   EDITOR=vi \
   LANG=en_US.UTF-8
-  
+
 RUN git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 
 ADD ./bin/setup.sh /root/
