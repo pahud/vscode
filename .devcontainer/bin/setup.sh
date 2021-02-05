@@ -2,6 +2,14 @@
 
 USERNAME=${USERNAME-vscode}
 
+# change 'docker' group to gid 992
+sudo groupmod -g 992 docker
+# add current user to `docker` group
+sudo usermod -a -G docker $USERNAME
+newgrp docker
+
+exit 0
+
 is_ec2() {
   curl --max-time 1 -s http://169.254.169.254/latest/meta-data/instance-id 2>&1 > /dev/null
   return $?
@@ -18,7 +26,6 @@ if [[ $CODESPACES == 'true' ]]; then
   newgrp docker
 else 
   if [[ is_ec2 ]]; then
-    USERNAME=${USERNAME-vscode}
     # change 'docker' group to gid 992
     sudo groupmod -g 992 docker
     # add current user to `docker` group
