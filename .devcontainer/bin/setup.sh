@@ -30,7 +30,9 @@ else
     # change 'docker' group to gid 992
     sudo groupmod -g 992 docker
     # add current user to `docker` group
+    echo "[INFO] sudo usermod -a -G docker $USERNAME"
     sudo usermod -a -G docker $USERNAME
+    echo "[INFO] sudo newgrp docker"
     sudo newgrp docker
     # add current user to `root` group
 #     sudo usermod -a -G root $USERNAME
