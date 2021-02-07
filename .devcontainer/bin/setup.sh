@@ -31,7 +31,7 @@ else
     sudo groupmod -g 992 docker
     # add current user to `docker` group
     sudo usermod -a -G docker $USERNAME
-    newgrp docker
+    sudo newgrp docker
     # add current user to `root` group
 #     sudo usermod -a -G root $USERNAME
   fi
