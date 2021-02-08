@@ -32,8 +32,8 @@ else
     # add current user to `docker` group
     echo "[INFO] sudo usermod -a -G docker $USERNAME"
     sudo usermod -a -G docker $USERNAME
-    echo "[INFO] sudo newgrp docker"
-    newgrp docker
+    #echo "[INFO] sudo newgrp docker"
+    #newgrp docker
     # add current user to `root` group
 #     sudo usermod -a -G root $USERNAME
   fi
