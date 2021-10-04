@@ -18,8 +18,8 @@ Configure `credential_process` for the `default` profile
 aws configure set credential_process ${PWD}/.devcontainer/bin/aws-sso-credential-process
 ```
 
-export `AWS_SHARED_CREDENTIALS_FILE` 
+AWS CLI requires the `~/.aws/credentials` file so we simple touch an empty one to get rid of the warning.
 
 ```sh
-export AWS_SHARED_CREDENTIALS_FILE=~/.aws/config
+touch ~/.aws/credentials
 ```
