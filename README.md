@@ -21,5 +21,5 @@ aws configure set credential_process ${PWD}/.devcontainer/bin/aws-sso-credential
 AWS CLI requires the `~/.aws/credentials` file so we simple touch an empty one to get rid of the warning.
 
 ```sh
-touch ~/.aws/credentials
+touch ~/.aws/credentials && chmod 600 $_
 ```
