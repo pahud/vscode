@@ -1,39 +1,34 @@
-FROM jsii/superchain
+FROM jsii/superchain:1-buster-slim
 
-RUN yum install -y jq wget zsh sudo docker
+ARG KUBECTL_URL='https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/kubectl'
+ARG AWS_CLI_V2_URL='https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip'
+ARG CRED_PROCESS_URL='https://raw.githubusercontent.com/pahud/vscode/main/.devcontainer/bin/aws-sso-credential-process'
+ARG TERRAFORM_URL='https://releases.hashicorp.com/terraform/1.0.7/terraform_1.0.7_linux_amd64.zip'
 
-RUN npm i -g aws-cdk
+USER root:root
 
-RUN mv $(which aws) /usr/bin/aws_V1
+# install jq wget
+RUN apt-get update && apt-get install -y jq wget
 
-ARG USERNAME=vscode
-ARG USER_UID=1000
-ARG USER_GID=1000
-
-# Setup user
-RUN adduser $USERNAME -s /bin/sh -u $USER_UID -U && \
-  mkdir -p /etc/sudoers.d && \
-  echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
-  chmod 0440 /etc/sudoers.d/$USERNAME
-
-# install aws-cli v2
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-  unzip awscliv2.zip && \
-  ./aws/install
+RUN mv $(which aws) /usr/local/bin/awscliv1 && \
+  curl "${AWS_CLI_V2_URL}" -o "/tmp/awscliv2.zip" && \
+  unzip /tmp/awscliv2.zip -d /tmp && \
+  /tmp/aws/install
 
 # install kubectl
-RUN curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.8/2020-09-18/bin/linux/amd64/kubectl && \
+RUN curl -o kubectl "${KUBECTL_URL}" && \
   chmod +x kubectl && \
-  mv kubectl /usr/local/bin/kubectl
+  mv kubectl /usr/local/bin
 
-# Setup shell
-USER $USERNAME
-RUN sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended &> /dev/null
-ENV ENV="/home/$USERNAME/.ashrc" \
-  ZSH=/home/$USERNAME/.oh-my-zsh \
-  EDITOR=vi \
-  LANG=en_US.UTF-8
+# install terraform
+RUN curl -o terraform.zip "${TERRAFORM_URL}" && \
+  unzip terraform.zip && \
+  mv terraform /usr/local/bin/ && \
+  rm -f terraform.zip
 
-RUN git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
+# install aws-sso-credential-process
+RUN cd /usr/local/bin && \
+  curl -o aws-sso-credential-process "${CRED_PROCESS_URL}" && \
+  chmod +x aws-sso-credential-process
 
-ADD ./bin/setup.sh /root/
+USER superchain:superchain
